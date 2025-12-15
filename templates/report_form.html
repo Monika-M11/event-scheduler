@@ -1,0 +1,23 @@
+<!-- templates/report_form.html -->
+{% extends "base.html" %}
+{% block title %}Utilisation Report{% endblock %}
+
+{% block content %}
+<h1>Resource Utilisation Report</h1>
+
+<form method="POST" class="card p-4">
+    <div class="row">
+        <div class="col-md-5">
+            <label class="form-label">Start Date</label>
+            <input type="date" name="start_date" class="form-control" required>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">End Date</label>
+            <input type="date" name="end_date" class="form-control" required>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Generate Report</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

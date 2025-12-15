@@ -1,0 +1,29 @@
+<!-- templates/allocate.html -->
+{% extends "base.html" %}
+{% block title %}Allocate Resources - {{ event.title }}{% endblock %}
+
+{% block content %}
+<h1>Allocate Resources to: {{ event.title }}</h1>
+<p><strong>Time:</strong> {{ event.start_time.strftime('%Y-%m-%d %H:%M') }} — {{ event.end_time.strftime('%H:%M') }}</p>
+
+<form method="POST">
+    <div class="mb-3">
+        <label class="form-label">Select Resources (multiple allowed)</label>
+        {% if resources %}
+            {% for resource in resources %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="resources" value="{{ resource.id }}"
+                       id="res{{ resource.id }}" {{ 'checked' if resource.id in allocated }}>
+                <label class="form-check-label" for="res{{ resource.id }}">
+                    {{ resource.name }} ({{ resource.type }})
+                </label>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No resources available. <a href="{{ url_for('resource_form') }}">Add some first</a>.</p>
+        {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary">Save Allocation</button>
+    <a href="{{ url_for('events') }}" class="btn btn-secondary">Back to Events</a>
+</form>
+{% endblock %}

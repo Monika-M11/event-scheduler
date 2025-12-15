@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Utilisation Report{% endblock %}
+
+{% block content %}
+<div id="utilisation-report">
+    <h1 class="mb-4">Utilisation Report ({{ start }} to {{ end }})</h1>
+
+    {% for item in report %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>{{ item.resource.name }}</strong> ({{ item.resource.type }})
+        </div>
+        <div class="card-body">
+            <p><strong>Total Hours Utilised:</strong> {{ item.total_hours }} hours</p>
+            {% if item.upcoming %}
+            <h6>Upcoming Bookings:</h6>
+            <ul>
+                {% for booking in item.upcoming %}
+                <li>{{ booking.title }} — {{ booking.time }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No bookings in selected range.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <p>No resources exist yet.</p>
+    {% endfor %}
+
+    <a href="{{ url_for('report') }}" class="btn btn-secondary mt-3">Back</a>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!-- templates/resources.html -->
+{% extends "base.html" %}
+{% block title %}Resources{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Resources</h1>
+<a href="{{ url_for('resource_form') }}" class="btn btn-primary mb-3">Add New Resource</a>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for resource in resources %}
+        <tr>
+            <td>{{ resource.name }}</td>
+            <td>{{ resource.type }}</td>
+            <td>
+                <a href="{{ url_for('resource_form', resource_id=resource.id) }}" class="btn btn-sm btn-outline-light">Edit</a>
+                <form action="{{ url_for('delete_resource', resource_id=resource.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3">No resources yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

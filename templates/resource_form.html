@@ -1,0 +1,25 @@
+<!-- templates/resource_form.html -->
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if resource else 'Add' }} Resource{% endblock %}
+
+{% block content %}
+<h1>{{ 'Edit' if resource else 'Add New' }} Resource</h1>
+
+<form method="POST">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" value="{{ resource.name if resource }}" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Type</label>
+        <select name="type" class="form-select" required>
+            <option value="room" {{ 'selected' if resource and resource.type=='room' }}>Room</option>
+            <option value="instructor" {{ 'selected' if resource and resource.type=='instructor' }}>Instructor</option>
+            <option value="equipment" {{ 'selected' if resource and resource.type=='equipment' }}>Equipment</option>
+            <option value="other" {{ 'selected' if resource and resource.type=='other' }}>Other</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Resource</button>
+    <a href="{{ url_for('resources') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
