@@ -9,12 +9,9 @@ A Flask-based web application for scheduling events and allocating shared resour
 - Resource Utilisation Report with total hours and upcoming bookings
 - Dark black & white theme (report in white cards for readability)
 
-## Demo Video 
- 
-[Click here to watch demo video](demo-video.mp4)
+## Demo Video (Mandatory)
 
-*(Directly playable in GitHub — no YouTube needed since file is small enough)*
-
+[![Click to watch the screen-recorded demo video](page1.png)](https://raw.githubusercontent.com/Monika-M11/event-scheduler/main/demo-video.mp4)
 ## Screenshots
 
 ### Page 1
