@@ -10,7 +10,7 @@ A Flask-based web application for scheduling events and allocating shared resour
 - Dark black & white theme (report in white cards for readability)
 
 ## Demo Video (Mandatory)
-[Click to watch the demo video](https://raw.githubusercontent.com/Monika-M11/event-scheduler/main/Demo/demo-video.mp4)
+[Click to watch the demo video](https://raw.githubusercontent.com/Monika-M11/event-scheduler/main/Demo/Demo-video.mp4)
 
 ## Screenshots
 
