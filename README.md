@@ -11,7 +11,7 @@ A Flask-based web application for scheduling events and allocating shared resour
 
 ## Demo Video 
  
-[Click here to watch demo video](Events%20-%2015%20December%202025.mp4)
+[Click here to watch demo video](demo-video.mp4)
 
 *(Directly playable in GitHub — no YouTube needed since file is small enough)*
 
