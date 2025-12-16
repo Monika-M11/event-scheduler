@@ -150,12 +150,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# -------------------------- Models --------------------------
+
 
 class Resource(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    type = db.Column(db.String(50), nullable=False)  # room, instructor, equipment, etc.
+    type = db.Column(db.String(50), nullable=False)  
 
     allocations = db.relationship('EventResourceAllocation', backref='resource', lazy=True, cascade='all, delete-orphan')
 
@@ -179,7 +179,7 @@ class EventResourceAllocation(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
     resource_id = db.Column(db.Integer, db.ForeignKey('resource.id'), nullable=False)
 
-# -------------------------- Helper Functions --------------------------
+
 
 def check_conflicts(event_id_to_ignore, resource_id, new_start, new_end):
     """
@@ -195,13 +195,12 @@ def check_conflicts(event_id_to_ignore, resource_id, new_start, new_end):
     ).first()
     return conflicting is not None
 
-# -------------------------- Routes --------------------------
 
 @app.route('/')
 def index():
     return redirect(url_for('events'))
 
-# Header navigation will be included in base.html
+
 
 @app.route('/events')
 def events():
@@ -246,7 +245,7 @@ def delete_event(event_id):
     flash('Event deleted.', 'success')
     return redirect(url_for('events'))
 
-# -------------------------- Resources --------------------------
+
 
 @app.route('/resources')
 def resources():
@@ -283,7 +282,7 @@ def delete_resource(resource_id):
     flash('Resource deleted.', 'success')
     return redirect(url_for('resources'))
 
-# -------------------------- Allocation --------------------------
+
 
 @app.route('/allocate/<int:event_id>', methods=['GET', 'POST'])
 def allocate_resources(event_id):
@@ -292,13 +291,13 @@ def allocate_resources(event_id):
     allocated_resource_ids = [alloc.resource_id for alloc in event.allocations]
 
     if request.method == 'POST':
-        selected_resource_ids = request.form.getlist('resources')  # checkbox list
+        selected_resource_ids = request.form.getlist('resources')  
 
-        # First, check for conflicts on newly added resources
+      
         conflicts = []
         for res_id in selected_resource_ids:
             res_id = int(res_id)
-            if res_id not in allocated_resource_ids:  # only check new ones
+            if res_id not in allocated_resource_ids: 
                 if check_conflicts(event.id, res_id, event.start_time, event.end_time):
                     resource = Resource.query.get(res_id)
                     conflicts.append(resource.name)
@@ -306,10 +305,10 @@ def allocate_resources(event_id):
         if conflicts:
             flash(f"Conflict detected for resource(s): {', '.join(conflicts)}", 'danger')
         else:
-            # Remove old allocations
+          
             EventResourceAllocation.query.filter_by(event_id=event.id).delete()
 
-            # Add new ones
+           
             for res_id in selected_resource_ids:
                 alloc = EventResourceAllocation(event_id=event.id, resource_id=int(res_id))
                 db.session.add(alloc)
@@ -321,7 +320,7 @@ def allocate_resources(event_id):
 
     return render_template('allocate.html', event=event, resources=all_resources, allocated=allocated_resource_ids)
 
-# -------------------------- Conflict View --------------------------
+
 
 @app.route('/conflicts')
 def conflicts():
@@ -348,7 +347,7 @@ def conflicts():
                     'time2': f"{overlap_alloc.event.start_time} - {overlap_alloc.event.end_time}"
                 })
 
-    # Remove duplicates by sorting and unique check
+
     unique_conflicts = []
     seen = set()
     for c in conflicts_list:
@@ -359,7 +358,7 @@ def conflicts():
 
     return render_template('conflicts.html', conflicts=unique_conflicts)
 
-# -------------------------- Utilisation Report --------------------------
+
 
 @app.route('/report', methods=['GET', 'POST'])
 def report():
@@ -367,7 +366,7 @@ def report():
         start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d')
         end_date = datetime.strptime(request.form['end_date'], '%Y-%m-%d')
 
-        # Add one day to end_date to make it inclusive
+      
         end_date = end_date.replace(hour=23, minute=59, second=59)
 
         resources = Resource.query.all()
@@ -401,8 +400,6 @@ def report():
         return render_template('report.html', report=report_data, start=start_date.date(), end=end_date.date())
 
     return render_template('report_form.html')
-
-# -------------------------- Run --------------------------
 
 
 if __name__ == '__main__':
